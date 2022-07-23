@@ -17,9 +17,9 @@
  *
  */
 
-package com.pilou.security.databasekeystore;
+package com.github.pilougit.security.databasekeystore;
 
-import com.pilou.security.databasekeystore.spi.DatabaseKeyStoreSpi;
+import com.github.pilougit.security.databasekeystore.spi.DatabaseKeyStoreSpi;
 
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;

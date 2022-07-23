@@ -17,34 +17,22 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore.model;
+package com.github.pilougit.security.databasekeystore.keystore.model;
+
 
 import lombok.Data;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
 
 @Slf4j
 @Data
-public class DatabaseKeyStoreEntry {
-    @NonNull
-    protected String label;
-    protected String cipherKey;
-    protected String cert;
-    protected String chain;
-    protected String keyPassword;
-    @NonNull
-    protected LocalDate created;
-
-    public boolean isCertEntry()
-    {
-        return StringUtils.isNoneBlank(cert);
-    }
-    public boolean isKeyEntry()
-    {
-        return StringUtils.isNoneBlank(cipherKey);
-    }
-
+@RequiredArgsConstructor
+public class DatabaseKeyStoreProtectedKey {
+    @NonNull protected String saltKey;
+    @NonNull protected String ivCiphedKey;
+    @NonNull protected String saltCipher;
+    @NonNull protected String cipheredData;
+    @NonNull protected String algorithmCipheredData;
+    @NonNull protected TypeCipheredKey typeCipheredKey;
 }

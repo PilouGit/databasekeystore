@@ -17,18 +17,8 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore;
+package com.github.pilougit.security.databasekeystore.keystore.model;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.EntityManager;
-import java.security.KeyStore;
-
-@Slf4j
-@Data
-public class DatabaseKeyStoreProtectionParameter implements KeyStore.ProtectionParameter {
-
-
+public enum TypeCipheredKey {
+    SYMETRIC_KEY,PUBLIC_KEY,PRIVATE_KEY;
 }

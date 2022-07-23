@@ -17,9 +17,9 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore.repository;
+package com.github.pilougit.security.databasekeystore.keystore.repository;
 
-import com.pilou.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
+import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
 
 import java.util.Collections;
 import java.util.Enumeration;

@@ -4,13 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.pilou.security</groupId>
+  <groupId>com.github.pilougit.security</groupId>
   <artifactId>databasekeystore</artifactId>
   <version>1.0-SNAPSHOT</version>
-
   <name>databasekeystore</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,7 +17,8 @@
     <lombok.version>1.18.24</lombok.version>
     <hibernate.groupId>org.hibernate</hibernate.groupId>
     <hibernate>5.6.0.Final</hibernate>
-
+<slf4j.version>1.7.36</slf4j.version>
+    <apache.commons.version>3.12.0</apache.commons.version>
   </properties>
 
   <dependencies>
@@ -35,11 +34,30 @@
       <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.70</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${apache.commons.version}</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <version>1.7.36</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${hibernate.groupId}</groupId>

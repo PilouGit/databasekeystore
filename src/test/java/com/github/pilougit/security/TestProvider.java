@@ -1,35 +1,34 @@
 /*
  *
- *  *
- *  * Copyright 2022 Pierre-Emmanuel Gros.
- *  *
- *  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
- *  * use this file except in compliance with the License. You may obtain a copy of
- *  * the License at
- *  *
- *  * https://www.gnu.org/licenses/lgpl-3.0.html
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- *  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- *  * License for the specific language governing permissions and limitations under
- *  * the License.
+ *
+ * Copyright 2022 Pierre-Emmanuel Gros.
+ *
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.gnu.org/licenses/lgpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
-package com.pilou.security;
+package com.github.pilougit.security;
 
-import com.pilou.security.databasekeystore.DatabaseKeyStoreProvider;
-import com.pilou.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
-import com.pilou.security.databasekeystore.keystore.DatabaseKeyStoreProtectionParameter;
-import com.pilou.security.databasekeystore.keystore.repository.DatabaseKeyStoreMemoryRepository;
+import com.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
+import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreMemoryRepository;
+import com.github.pilougit.security.databasekeystore.keystore.service.AESGcmCipheringKeyService;
+import com.github.pilougit.security.databasekeystore.DatabaseKeyStoreProvider;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,17 +36,17 @@ import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.*;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
 public class TestProvider {
-    private X509Certificate certificate;
+    private static X509Certificate certificate;
 
-    public X509Certificate generateSelfSignedX509Certificate() throws CertificateEncodingException, InvalidKeyException, IllegalStateException,
+    public static X509Certificate generateSelfSignedX509Certificate() throws CertificateEncodingException, InvalidKeyException, IllegalStateException,
             NoSuchProviderException, NoSuchAlgorithmException, SignatureException {
-        addBouncyCastleAsSecurityProvider();
 
         // generate a key pair
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
@@ -78,18 +77,21 @@ public class TestProvider {
 
 
     @BeforeClass
-    public void addBouncyCastleAsSecurityProvider() throws CertificateEncodingException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+    public static void addBouncyCastleAsSecurityProvider() throws CertificateEncodingException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
         Security.addProvider(new BouncyCastleProvider());
-        this.certificate=generateSelfSignedX509Certificate();
+        certificate=generateSelfSignedX509Certificate();
     }
     @Test
     public void testLoadTestProvider() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException {
             Security.addProvider(new DatabaseKeyStoreProvider());
         KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
-        keystore.load(new DatabaseKeyStoreLoadStoreParameter(new DatabaseKeyStoreProtectionParameter(), new DatabaseKeyStoreMemoryRepository()));
-        keystore.setCertificateEntry("pilou",this.certificate);
+        keystore.load(new DatabaseKeyStoreLoadStoreParameter( new DatabaseKeyStoreMemoryRepository(),new AESGcmCipheringKeyService()));
+        keystore.setCertificateEntry("pilou",certificate);
 
         Date date=keystore.getCreationDate("pilou");
         System.err.println(date);
+        Certificate certificate2 = keystore.getCertificate("pilou");
+        System.err.println(certificate2);
+
     }
 }

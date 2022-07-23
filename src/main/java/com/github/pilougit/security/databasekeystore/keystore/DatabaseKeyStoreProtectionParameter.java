@@ -17,24 +17,18 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore;
+package com.github.pilougit.security.databasekeystore.keystore;
 
-import com.pilou.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.EntityManager;
 import java.security.KeyStore;
 
 @Slf4j
 @Data
-public class DatabaseKeyStoreLoadStoreParameter implements KeyStore.LoadStoreParameter {
-
-    @NonNull
-    private  DatabaseKeyStoreProtectionParameter protectionParameter;
-    @NonNull
-    protected DatabaseKeyStoreRepository databaseKeyStoreRepository;
-
+public class DatabaseKeyStoreProtectionParameter implements KeyStore.ProtectionParameter {
 
 
 }
