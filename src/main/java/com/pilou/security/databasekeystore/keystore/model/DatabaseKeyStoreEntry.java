@@ -17,24 +17,34 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore;
+package com.pilou.security.databasekeystore.keystore.model;
 
-import com.pilou.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
-import java.security.KeyStore;
+import java.time.LocalDate;
 
 @Slf4j
 @Data
-public class DatabaseKeyStoreLoadStoreParameter implements KeyStore.LoadStoreParameter {
-
+public class DatabaseKeyStoreEntry {
     @NonNull
-    private  DatabaseKeyStoreProtectionParameter protectionParameter;
+    protected String label;
+    protected String cipherKey;
+    protected String cert;
+    protected String chain;
+    protected String keyPassword;
     @NonNull
-    protected DatabaseKeyStoreRepository databaseKeyStoreRepository;
+    protected LocalDate created;
 
-
+    public boolean isCertEntry()
+    {
+        return StringUtils.isNoneBlank(cert);
+    }
+    public boolean isKeyEntry()
+    {
+        return StringUtils.isNoneBlank(cipherKey);
+    }
 
 }

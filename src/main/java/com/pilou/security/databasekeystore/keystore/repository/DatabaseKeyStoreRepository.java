@@ -17,24 +17,20 @@
  *
  */
 
-package com.pilou.security.databasekeystore.keystore;
+package com.pilou.security.databasekeystore.keystore.repository;
 
-import com.pilou.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import com.pilou.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
 
-import java.security.KeyStore;
+import java.util.Enumeration;
 
-@Slf4j
-@Data
-public class DatabaseKeyStoreLoadStoreParameter implements KeyStore.LoadStoreParameter {
+public interface DatabaseKeyStoreRepository {
+    DatabaseKeyStoreEntry getByAlias(String alias);
 
-    @NonNull
-    private  DatabaseKeyStoreProtectionParameter protectionParameter;
-    @NonNull
-    protected DatabaseKeyStoreRepository databaseKeyStoreRepository;
+    int size();
 
+    Enumeration<String> listAlias();
 
+    void delete(String alias);
 
+    void store(DatabaseKeyStoreEntry entry);
 }

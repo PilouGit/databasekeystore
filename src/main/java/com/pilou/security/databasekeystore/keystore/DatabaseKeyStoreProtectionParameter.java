@@ -29,7 +29,6 @@ import java.security.KeyStore;
 @Slf4j
 @Data
 public class DatabaseKeyStoreProtectionParameter implements KeyStore.ProtectionParameter {
-    @NonNull
-    protected EntityManager entityManager;
+
 
 }

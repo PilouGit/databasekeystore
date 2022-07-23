@@ -20,21 +20,76 @@
 package com.pilou.security;
 
 import com.pilou.security.databasekeystore.DatabaseKeyStoreProvider;
+import com.pilou.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
+import com.pilou.security.databasekeystore.keystore.DatabaseKeyStoreProtectionParameter;
+import com.pilou.security.databasekeystore.keystore.repository.DatabaseKeyStoreMemoryRepository;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.X509Extensions;
+import org.bouncycastle.asn1.x509.X509Name;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchProviderException;
-import java.security.Security;
+import javax.security.auth.x500.X500Principal;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Date;
 
 public class TestProvider {
+    private X509Certificate certificate;
 
+    public X509Certificate generateSelfSignedX509Certificate() throws CertificateEncodingException, InvalidKeyException, IllegalStateException,
+            NoSuchProviderException, NoSuchAlgorithmException, SignatureException {
+        addBouncyCastleAsSecurityProvider();
+
+        // generate a key pair
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
+        keyPairGenerator.initialize(4096, new SecureRandom());
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+        // build a certificate generator
+        X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
+        X500Principal dnName = new X500Principal("cn=example");
+
+        // add some options
+        certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
+        certGen.setSubjectDN(new X509Name("dc=name"));
+        certGen.setIssuerDN(dnName); // use the same
+        // yesterday
+        certGen.setNotBefore(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000));
+        // in 2 years
+        certGen.setNotAfter(new Date(System.currentTimeMillis() + 2 * 365 * 24 * 60 * 60 * 1000));
+        certGen.setPublicKey(keyPair.getPublic());
+        certGen.setSignatureAlgorithm("SHA256WithRSAEncryption");
+        certGen.addExtension(X509Extensions.ExtendedKeyUsage, true,
+                new ExtendedKeyUsage(KeyPurposeId.id_kp_timeStamping));
+
+        // finally, sign the certificate with the private key of the same KeyPair
+        X509Certificate cert = certGen.generate(keyPair.getPrivate(), "BC");
+        return cert;
+    }
+
+
+    @BeforeClass
+    public void addBouncyCastleAsSecurityProvider() throws CertificateEncodingException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+        Security.addProvider(new BouncyCastleProvider());
+        this.certificate=generateSelfSignedX509Certificate();
+    }
     @Test
-    public void testLoadTestProvider() throws KeyStoreException, NoSuchProviderException {
-        Security.addProvider(new DatabaseKeyStoreProvider());
+    public void testLoadTestProvider() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException {
+            Security.addProvider(new DatabaseKeyStoreProvider());
         KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
-        KeyStore.LoadStoreParameter parameter;
+        keystore.load(new DatabaseKeyStoreLoadStoreParameter(new DatabaseKeyStoreProtectionParameter(), new DatabaseKeyStoreMemoryRepository()));
+        keystore.setCertificateEntry("pilou",this.certificate);
 
-
+        Date date=keystore.getCreationDate("pilou");
+        System.err.println(date);
     }
 }
