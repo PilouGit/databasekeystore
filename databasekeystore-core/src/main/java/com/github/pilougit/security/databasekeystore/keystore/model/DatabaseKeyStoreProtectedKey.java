@@ -20,25 +20,31 @@
 package com.github.pilougit.security.databasekeystore.keystore.model;
 
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DatabaseKeyStoreProtectedKey {
     @NonNull
+    @JsonProperty("saltKey")
     protected String saltKey;
     @NonNull
+    @JsonProperty("ivCiphedKey")
     protected String ivCiphedKey;
     @NonNull
+    @JsonProperty("saltCipher")
     protected String saltCipher;
     @NonNull
+    @JsonProperty("cipheredData")
     protected String cipheredData;
     @NonNull
+    @JsonProperty("algorithmCipheredData")
     protected String algorithmCipheredData;
     @NonNull
+    @JsonProperty("typeCipheredKey")
     protected TypeCipheredKey typeCipheredKey;
 }

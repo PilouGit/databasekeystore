@@ -1,81 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>databasekeystore-jpa</artifactId>
+
+    <packaging>jar</packaging>
+    <name>Databasekeystore JPA Store Impl </name>
+    <description>Databasekeystore JPA Impl </description>
+    <properties>
+        <hibernate.groupId>org.hibernate</hibernate.groupId>
+        <hibernate>5.6.9.Final</hibernate>
+        <eclipselink>3.0.2</eclipselink>
+
+
+
+    </properties>
+
+<dependencies>
+    <dependency>
+     <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-core</artifactId>
+        <version>1.0</version>
+</dependency>
+    <dependency>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-core</artifactId>
+        <version>1.0</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>${hibernate.groupId}</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibernate}</version>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>org.eclipse.persistence.jpa</artifactId>
+        <version>${eclipselink}</version>
+        <optional>true</optional>
+    </dependency>
+
+    <dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>2.5.1</version>
+    <scope>test</scope>
+</dependency>
+
+</dependencies>
+    <!--   <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.pilougit.security</groupId>
-    <artifactId>databasekeystore-parent</artifactId>
-    <version>1.0</version>
-    <packaging>pom</packaging>
-    <name>DatabaseKeyStore</name>
-    <description>Top DatabaseKeyStore project pom.xml file</description>
-    <url>https://github.com/PilouGit/databasekeystore</url>
-    <scm>
-        <url>https://github.com/PilouGit/databasekeystore</url>
-        <connection>scm:git:https://github.com/PilouGit/databasekeystore.git</connection>
-    </scm>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <lombok.version>1.18.24</lombok.version>
-        <latest.stable.version>1.0</latest.stable.version>
-        <slf4j.version>1.7.36</slf4j.version>
-        <apache.commons.version>3.12.0</apache.commons.version>
-        <jackson.version>2.13.3</jackson.version>
-       </properties>
-    <modules>
-        <module>databasekeystore-core</module>
-        <module>databasekeystore-simple</module>
-        <module>databasekeystore-jpa</module>
-    </modules>
+    <artifactId>databasekeystore</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>databasekeystore</name>
+
+
+
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.70</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache.commons.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
+         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
@@ -90,15 +106,13 @@
     </dependencies>
 
     <build>
-        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+        <pluginManagement>
             <plugins>
-                <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.1.0</version>
                 </plugin>
-                <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-                <plugin>
+                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
                 </plugin>
@@ -122,7 +136,6 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
                 </plugin>
-                <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
@@ -147,4 +160,5 @@
                 </execution>
             </executions>
         </plugin></plugins>
-    </build></project>
+    </build>-->
+</project>

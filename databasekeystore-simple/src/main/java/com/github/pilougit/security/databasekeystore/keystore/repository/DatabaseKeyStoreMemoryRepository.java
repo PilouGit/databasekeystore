@@ -30,7 +30,7 @@ public class DatabaseKeyStoreMemoryRepository implements DatabaseKeyStoreReposit
     protected Map<String, DatabaseKeyStoreEntry> entry = new HashMap<>();
 
     @Override
-    public DatabaseKeyStoreEntry getByAlias(String alias) {
+    public DatabaseKeyStoreEntry getByAlias(String alias, DatabaseKeyStoreRepository.LOCKTYPE locktype) {
         return entry.get(alias);
     }
 

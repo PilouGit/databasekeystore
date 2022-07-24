@@ -19,9 +19,8 @@
 
 package com.github.pilougit.security.databasekeystore.keystore.model;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
@@ -34,10 +33,13 @@ import java.util.Base64;
 @Slf4j
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DatabaseKeyStoreCertificate {
     @NonNull
+    @JsonProperty("typeCertificate")
     protected String type;
     @NonNull
+    @JsonProperty("Certificate")
     protected String cert;
 
     public DatabaseKeyStoreCertificate(Certificate certificate) throws CertificateEncodingException {

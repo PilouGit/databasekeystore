@@ -19,18 +19,24 @@
 
 package com.github.pilougit.security.databasekeystore.keystore.repository;
 
+import com.github.pilougit.security.databasekeystore.keystore.exceptions.DatabaseKeyStoreRepositoryException;
 import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
 
 import java.util.Enumeration;
 
 public interface DatabaseKeyStoreRepository {
-    DatabaseKeyStoreEntry getByAlias(String alias);
+    DatabaseKeyStoreEntry getByAlias(String alias,DatabaseKeyStoreRepository.LOCKTYPE lockType) throws DatabaseKeyStoreRepositoryException;
 
-    int size();
+    int size() throws DatabaseKeyStoreRepositoryException;;
 
-    Enumeration<String> listAlias();
+    Enumeration<String> listAlias() throws DatabaseKeyStoreRepositoryException;;
 
-    void delete(String alias);
+    void delete(String alias) throws DatabaseKeyStoreRepositoryException;;
 
-    void store(DatabaseKeyStoreEntry entry);
+    void store(DatabaseKeyStoreEntry entry) throws DatabaseKeyStoreRepositoryException;;
+
+    public enum LOCKTYPE {
+        LOCK,NOLOCK
+
+    }
 }

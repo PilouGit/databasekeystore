@@ -19,8 +19,9 @@
 
 package com.github.pilougit.security.databasekeystore.keystore.model;
 
-import lombok.Data;
-import lombok.NonNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -28,19 +29,28 @@ import java.util.List;
 
 @Slf4j
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DatabaseKeyStoreEntry {
     @NonNull
+    @JsonProperty("label")
     protected String label;
+    @JsonProperty("cipherKey")
     protected DatabaseKeyStoreProtectedKey cipherKey;
+    @JsonProperty("cert")
     protected DatabaseKeyStoreCertificate cert;
+    @JsonProperty("chain")
     protected List<DatabaseKeyStoreCertificate> chain;
     @NonNull
+    @JsonProperty("created")
     protected LocalDate created;
 
+    @JsonIgnore
     public boolean isCertEntry() {
         return cert != null;
     }
 
+    @JsonIgnore
     public boolean isKeyEntry() {
         return cipherKey != null;
     }

@@ -21,10 +21,12 @@ package com.github.pilougit.security.databasekeystore.spi;
 
 import com.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
 import com.github.pilougit.security.databasekeystore.keystore.exceptions.CipheringKeyServiceException;
+import com.github.pilougit.security.databasekeystore.keystore.exceptions.DatabaseKeyStoreRepositoryException;
 import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreCertificate;
 import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
 import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreProtectedKey;
 import com.github.pilougit.security.databasekeystore.keystore.model.TypeCipheredKey;
+import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
 import com.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -52,7 +55,12 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) throws NoSuchAlgorithmException, UnrecoverableKeyException {
         log.trace("DatabaseKeyStoreSpi::engineGetKey({},{})", alias, password);
-        DatabaseKeyStoreEntry entry = this.getDatabaseKeyStoreEntryByAlias(alias);
+        DatabaseKeyStoreEntry entry = null;
+        try {
+            entry = this.getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
         Key result = null;
         if (entry != null && entry.isKeyEntry()) {
             try {
@@ -62,7 +70,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
                 Base64.Decoder base64Encoder = Base64.getDecoder();
                 byte[] saltKey = base64Encoder.decode(cipherKey.getSaltKey());
                 SecretKey secretKey = cipheringService.generateSecretKey(password, saltKey);
-                byte[] aad = base64Encoder.decode(cipherKey.getSaltKey());
+                byte[] aad = base64Encoder.decode(cipherKey.getSaltCipher());
                 byte[] iv = base64Encoder.decode(cipherKey.getIvCiphedKey());
                 byte[] cipheredData = base64Encoder.decode(cipherKey.getCipheredData());
                 byte[] clearKey = cipheringService.decrypt(secretKey, iv, aad, cipheredData);
@@ -76,7 +84,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
                     }
                     case PRIVATE_KEY: {
                         KeyFactory keyFactory = KeyFactory.getInstance(algorightm);
-                        X509EncodedKeySpec privateKey = new X509EncodedKeySpec(clearKey);
+                        PKCS8EncodedKeySpec privateKey = new PKCS8EncodedKeySpec (clearKey);
                         result = keyFactory.generatePrivate(privateKey);
                         break;
                     }
@@ -102,7 +110,12 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
 
-        DatabaseKeyStoreEntry entry = this.getDatabaseKeyStoreEntryByAlias(alias);
+        DatabaseKeyStoreEntry entry = null;
+        try {
+            entry = this.getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
         Certificate[] result = null;
         if (entry != null && entry.getChain() != null) {
             result = new Certificate[entry.getChain().size()];
@@ -120,7 +133,12 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
     @Override
     public Certificate engineGetCertificate(String alias) {
 
-        DatabaseKeyStoreEntry entry = getDatabaseKeyStoreEntryByAlias(alias);
+        DatabaseKeyStoreEntry entry = null;
+        try {
+            entry = getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
         Certificate result = null;
         if (entry != null && entry.isCertEntry()) {
             DatabaseKeyStoreCertificate databaseKeyStoreCertificate = entry.getCert();
@@ -138,7 +156,12 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
     @Override
     public Date engineGetCreationDate(String alias) {
         log.trace("DatabaseKeyStoreSpi::engineGetCreationDate({})", alias);
-        DatabaseKeyStoreEntry entry = getDatabaseKeyStoreEntryByAlias(alias);
+        DatabaseKeyStoreEntry entry = null;
+        try {
+            entry = getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
         return entry != null ? Date.from(entry.getCreated().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
     }
 
@@ -157,7 +180,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
             Pair<byte[], byte[]> dataAndIv = cipheringService.encrypt(secretKey, aad, key.getEncoded());
             Base64.Encoder base64Encoder = Base64.getEncoder();
 
-            DatabaseKeyStoreEntry keyStoreEntry = this.getDatabaseKeyStoreEntryByAlias(alias);
+            DatabaseKeyStoreEntry keyStoreEntry = this.getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.LOCK);
             if (keyStoreEntry == null) {
                 keyStoreEntry = new DatabaseKeyStoreEntry(alias, LocalDate.now());
             }
@@ -178,7 +201,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
             keyStoreEntry.setCipherKey(protectedKey);
             this.setCertificateChain(keyStoreEntry, certificates);
             this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().store(keyStoreEntry);
-        } catch (CipheringKeyServiceException | CertificateEncodingException e) {
+        } catch (CipheringKeyServiceException | CertificateEncodingException | DatabaseKeyStoreRepositoryException e) {
             throw new KeyStoreException(e);
         }
     }
@@ -206,7 +229,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
     public void engineSetCertificateEntry(String alias, Certificate certificate) throws KeyStoreException {
 
         try {
-            DatabaseKeyStoreEntry entry = getDatabaseKeyStoreEntryByAlias(alias);
+            DatabaseKeyStoreEntry entry = getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.LOCK);
 
             DatabaseKeyStoreCertificate databaseKeyStoreCertificate = new DatabaseKeyStoreCertificate(certificate);
             if (entry == null) {
@@ -214,7 +237,7 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
             }
             entry.setCert(databaseKeyStoreCertificate);
             this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().store(entry);
-        } catch (CertificateEncodingException e) {
+        } catch (CertificateEncodingException | DatabaseKeyStoreRepositoryException e) {
             throw new KeyStoreException(e);
         }
 
@@ -222,32 +245,57 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
 
     @Override
     public void engineDeleteEntry(String alias) throws KeyStoreException {
-        this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().delete(alias);
+        try {
+            this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().delete(alias);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new KeyStoreException(e);
+        }
     }
 
     @Override
     public Enumeration<String> engineAliases() {
-        return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().listAlias();
+        try {
+            return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().listAlias();
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean engineContainsAlias(String alias) {
-        return getDatabaseKeyStoreEntryByAlias(alias) != null;
+        try {
+            return getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK) != null;
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int engineSize() {
-        return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().size();
+        try {
+            return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().size();
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean engineIsKeyEntry(String alias) {
-        return this.getDatabaseKeyStoreEntryByAlias(alias).isKeyEntry();
+        try {
+            return this.getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK).isKeyEntry();
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
-        DatabaseKeyStoreEntry keyStoreEntry = getDatabaseKeyStoreEntryByAlias(alias);
+        DatabaseKeyStoreEntry keyStoreEntry = null;
+        try {
+            keyStoreEntry = getDatabaseKeyStoreEntryByAlias(alias, DatabaseKeyStoreRepository.LOCKTYPE.NOLOCK);
+        } catch (DatabaseKeyStoreRepositoryException e) {
+            throw new RuntimeException(e);
+        }
 
         return keyStoreEntry != null && keyStoreEntry.isCertEntry();
     }
@@ -263,8 +311,8 @@ public class DatabaseKeyStoreSpi extends KeyStoreSpi {
 
     }
 
-    protected DatabaseKeyStoreEntry getDatabaseKeyStoreEntryByAlias(String alias) {
-        return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().getByAlias(alias);
+    protected DatabaseKeyStoreEntry getDatabaseKeyStoreEntryByAlias(String alias, DatabaseKeyStoreRepository.LOCKTYPE lockType) throws DatabaseKeyStoreRepositoryException {
+        return this.databaseKeyStoreLoadStoreParameter.getDatabaseKeyStoreRepository().getByAlias(alias,lockType);
     }
 
     @Override
