@@ -24,8 +24,15 @@ import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyS
 
 import java.util.Enumeration;
 
-public interface DatabaseKeyStoreRepository {
-    DatabaseKeyStoreEntry getByAlias(String alias,DatabaseKeyStoreRepository.LOCKTYPE lockType) throws DatabaseKeyStoreRepositoryException;
+public interface DatabaseKeyStoreRepository< transaction extends DatabaseKeyStoreRepositoryTransaction> {
+
+    transaction beginTransaction();
+
+    void commitTransaction(transaction transaction);
+
+    void rollBackTransaction(transaction transaction);
+
+    DatabaseKeyStoreEntry getByAlias(String alias) throws DatabaseKeyStoreRepositoryException;
 
     int size() throws DatabaseKeyStoreRepositoryException;;
 

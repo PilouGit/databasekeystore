@@ -26,11 +26,28 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DatabaseKeyStoreMemoryRepository implements DatabaseKeyStoreRepository {
+public class DatabaseKeyStoreMemoryRepository implements DatabaseKeyStoreRepository<DatabaseKeyStoreMemoryRepositoryTransaction>{
     protected Map<String, DatabaseKeyStoreEntry> entry = new HashMap<>();
 
     @Override
-    public DatabaseKeyStoreEntry getByAlias(String alias, DatabaseKeyStoreRepository.LOCKTYPE locktype) {
+    public DatabaseKeyStoreMemoryRepositoryTransaction beginTransaction() {
+        return new DatabaseKeyStoreMemoryRepositoryTransaction();
+    }
+
+    @Override
+    public void commitTransaction(DatabaseKeyStoreMemoryRepositoryTransaction transaction) {
+
+    }
+
+    @Override
+    public void rollBackTransaction(DatabaseKeyStoreMemoryRepositoryTransaction transaction) {
+
+    }
+
+
+
+    @Override
+    public DatabaseKeyStoreEntry getByAlias(String alias) {
         return entry.get(alias);
     }
 

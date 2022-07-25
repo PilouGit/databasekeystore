@@ -121,7 +121,7 @@ public abstract class CoreTestProvider extends TestUtils {
         protected void testCertificate() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
         Certificate certificate=generateSelfSignedX509Certificate();
         KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
-        keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(), new AESGcmCipheringKeyService()));
+        keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(), getCipheringKeyService()));
         keystore.setCertificateEntry("pilou", certificate);
 
         Date date = keystore.getCreationDate("pilou");

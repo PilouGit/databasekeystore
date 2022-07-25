@@ -29,19 +29,37 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.*;
 
 @Slf4j
 @Data
-public class DatabaseKeyStoreJpaRepository implements DatabaseKeyStoreRepository {
+public class DatabaseKeyStoreJpaRepository implements DatabaseKeyStoreRepository<DatabaseKeyStoreJpaRepositoryTransaction>{
     @NonNull
     protected EntityManager entityManager;
     protected DatabaseKeyStoreEntrySerializationService databaseKeyStoreEntrySerializationService=new DatabaseKeyStoreEntrySerializationService();
 
+
     @Override
-    public DatabaseKeyStoreEntry getByAlias(String alias, DatabaseKeyStoreRepository.LOCKTYPE locktype) throws DatabaseKeyStoreRepositoryException{
+    public DatabaseKeyStoreJpaRepositoryTransaction beginTransaction() {
+        EntityTransaction transaction=entityManager.getTransaction();
+        transaction.begin();
+        return new DatabaseKeyStoreJpaRepositoryTransaction(transaction);
+    }
+
+    @Override
+    public void commitTransaction(DatabaseKeyStoreJpaRepositoryTransaction transaction) {
+
+      if (DatabaseKeyStoreJpaRepositoryTransaction.isClosable(transaction))  transaction.getTransaction().commit();
+    }
+    @Override
+    public void rollBackTransaction(DatabaseKeyStoreJpaRepositoryTransaction transaction) {
+        if (DatabaseKeyStoreJpaRepositoryTransaction.isClosable(transaction))  transaction.getTransaction().rollback();
+    }
+    @Override
+    public DatabaseKeyStoreEntry getByAlias(String alias) throws DatabaseKeyStoreRepositoryException{
         DatabaseKeyStoreEntity entity=  findByAlias(alias);
         DatabaseKeyStoreEntry result=null;
         if (entity!=null)
