@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.github.pilougit.security</groupId>
         <artifactId>databasekeystore-parent</artifactId>
-        <version>1.0</version>
+        <version>1.0-alpha</version>
     </parent>
 
     <artifactId>databasekeystore-jpa</artifactId>

@@ -22,7 +22,7 @@
 
     <groupId>com.github.pilougit.security</groupId>
     <artifactId>databasekeystore-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0-alpha</version>
     <packaging>pom</packaging>
 
     <name>DatabaseKeyStore</name>
@@ -32,6 +32,7 @@
         <url>https://github.com/PilouGit/databasekeystore</url>
         <connection>scm:git:https://github.com/PilouGit/databasekeystore.git</connection>
         <developerConnection>scm:git:https://github.com/PilouGit/databasekeystore.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
     <licenses>
         <license>
@@ -45,7 +46,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.24</lombok.version>
-        <latest.stable.version>1.0</latest.stable.version>
+        <latest.stable.version>1.0-alpha</latest.stable.version>
         <slf4j.version>1.7.36</slf4j.version>
         <apache.commons.version>3.12.0</apache.commons.version>
         <jackson.version>2.13.3</jackson.version>
@@ -56,6 +57,7 @@
         <module>databasekeystore-core</module>
         <module>databasekeystore-simple</module>
         <module>databasekeystore-jpa</module>
+        <module>databasekeystore-caffeine</module>
     </modules>
 
     <dependencies>
@@ -130,7 +132,14 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
-    </dependencies></dependencyManagement>
+        <dependency>
+            <groupId>com.github.pilougit.security</groupId>
+            <artifactId>databasekeystore-simple</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    </dependencyManagement>
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>

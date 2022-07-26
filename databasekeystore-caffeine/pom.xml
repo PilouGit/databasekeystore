@@ -25,10 +25,41 @@
         <version>1.0-alpha</version>
     </parent>
 
-    <artifactId>databasekeystore-core</artifactId>
+    <artifactId>databasekeystore-jsr107</artifactId>
 
     <packaging>jar</packaging>
-    <name>Databasekeystore Core Module</name>
-    <description>Databasekeystore Core Module</description>
+    <name>Databasekeystore Cached  Impl </name>
+    <description>Databasekeystore Cached Impl </description>
+    <properties>
+        <caffeine>3.1.1</caffeine>
 
+
+
+    </properties>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-core</artifactId>
+     </dependency>
+    <dependency>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-core</artifactId>
+        <type>test-jar</type>
+        <scope>test</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>3.1.1</version>
+
+    </dependency>
+    <dependency>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-simple</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+</dependencies>
 </project>

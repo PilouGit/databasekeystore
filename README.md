@@ -23,6 +23,7 @@ security.provider.<n>=com.github.pilougit.security.databasekeystore.DatabaseKeyS
 
 * JPA Storage Engine
 * Memory Storage Engine
+* Cache Storage Engine 
 
 
 # JPA Storage Engine
@@ -70,7 +71,27 @@ entry TEXT not null
 
 CREATE UNIQUE INDEX idx_alias ON keyentry(alias);
 ```
+# Cache Storage Engine
+To achieve good performance it is possible to create a cache around the key storage engine.
+The current implementation use caffeine to achieve it.
 
+``` java
+protected DatabaseKeyStoreRepository getDatabaseKeyStore()
+{
+
+        Cache<String, DatabaseKeyStoreEntry> cache = Caffeine.newBuilder()
+                .maximumSize(10_000)
+                .expireAfterWrite(Duration.ofMinutes(5))
+                .build();
+
+        return new DatabaseKeyStoreCacheRepository(cache,new DatabaseKeyStoreMemoryRepository());
+    }
+    ...
+ 
+ KeyStore keystore = KeyStore.getInstance(DatabaseKeyStoreProvider.KEYSTORE, DatabaseKeyStoreProvider.PROVIDER_NAME);
+keystore.load(new DatabaseKeyStoreLoadStoreParameter(getDatabaseKeyStore(), new AESGcmCipheringKeyService()));
+
+```
 # Encryption schema
 
 Private keys will be stored according to the implementation of CipheringKeyService which is either currently:

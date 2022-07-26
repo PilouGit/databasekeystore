@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="databasekeystore-simple" />
+        <module name="databasekeystore-caffeine" />
         <module name="databasekeystore-core" />
         <module name="databasekeystore-jpa" />
       </profile>
