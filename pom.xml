@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2022  Pierre-Emmanuel Gros aka Pilou
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -8,13 +24,22 @@
     <artifactId>databasekeystore-parent</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
     <name>DatabaseKeyStore</name>
     <description>Top DatabaseKeyStore project pom.xml file</description>
     <url>https://github.com/PilouGit/databasekeystore</url>
     <scm>
         <url>https://github.com/PilouGit/databasekeystore</url>
         <connection>scm:git:https://github.com/PilouGit/databasekeystore.git</connection>
+        <developerConnection>scm:git:https://github.com/PilouGit/databasekeystore.git</developerConnection>
     </scm>
+    <licenses>
+        <license>
+            <name>Apache 2.0 License</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -90,7 +115,22 @@
         </dependency>
 
     </dependencies>
+    <dependencyManagement>
+    <dependencies>
 
+    <dependency>
+        <groupId>com.github.pilougit.security</groupId>
+        <artifactId>databasekeystore-core</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+        <dependency>
+            <groupId>com.github.pilougit.security</groupId>
+            <artifactId>databasekeystore-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+    </dependencies></dependencyManagement>
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
@@ -115,6 +155,13 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -134,8 +181,7 @@
                     <version>3.0.0</version>
                 </plugin>
 
-
-            </plugins>
+                            </plugins>
         </pluginManagement>
         <plugins><plugin>
             <groupId>org.owasp</groupId>
