@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
-import com.github.pilougit.security.databasekeystore.DatabaseKeyStoreProvider;
+import io.github.pilougit.security.databasekeystore.DatabaseKeyStoreProvider;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.X509Extensions;

@@ -19,7 +19,7 @@
     <persistence-unit name="HSQLDB" transaction-type="RESOURCE_LOCAL">
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.github.pilougit.security.databasekeystore.keystore.entity.DatabaseKeyStoreEntity</class>
+        <class>DatabaseKeyStoreEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
@@ -41,7 +41,7 @@
     <persistence-unit name="MYSQL" >
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.github.pilougit.security.databasekeystore.keystore.entity.DatabaseKeyStoreEntity</class>
+        <class>DatabaseKeyStoreEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.testcontainers.jdbc.ContainerDatabaseDriver"/>
@@ -55,7 +55,7 @@
     <persistence-unit name="PG" >
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.github.pilougit.security.databasekeystore.keystore.entity.DatabaseKeyStoreEntity</class>
+        <class>DatabaseKeyStoreEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.testcontainers.jdbc.ContainerDatabaseDriver"/>

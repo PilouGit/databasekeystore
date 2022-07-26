@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
-import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreCacheRepository;
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreMemoryRepository;
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
-import com.github.pilougit.security.databasekeystore.keystore.service.AESGcmCipheringKeyService;
-import com.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
+import io.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
+import io.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreCacheRepository;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreMemoryRepository;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
+import io.github.pilougit.security.databasekeystore.keystore.service.AESGcmCipheringKeyService;
+import io.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 

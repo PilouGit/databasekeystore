@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;

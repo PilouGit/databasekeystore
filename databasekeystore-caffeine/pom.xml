@@ -20,12 +20,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.pilougit.security</groupId>
+        <groupId>io.github.pilougit.security</groupId>
         <artifactId>databasekeystore-parent</artifactId>
         <version>1.0-alpha</version>
     </parent>
 
-    <artifactId>databasekeystore-jsr107</artifactId>
+    <artifactId>databasekeystore-caffeine</artifactId>
 
     <packaging>jar</packaging>
     <name>Databasekeystore Cached  Impl </name>
@@ -39,11 +39,11 @@
 
 <dependencies>
     <dependency>
-        <groupId>com.github.pilougit.security</groupId>
+        <groupId>io.github.pilougit.security</groupId>
         <artifactId>databasekeystore-core</artifactId>
      </dependency>
     <dependency>
-        <groupId>com.github.pilougit.security</groupId>
+        <groupId>io.github.pilougit.security</groupId>
         <artifactId>databasekeystore-core</artifactId>
         <type>test-jar</type>
         <scope>test</scope>
@@ -56,7 +56,7 @@
 
     </dependency>
     <dependency>
-        <groupId>com.github.pilougit.security</groupId>
+        <groupId>io.github.pilougit.security</groupId>
         <artifactId>databasekeystore-simple</artifactId>
         <scope>test</scope>
     </dependency>

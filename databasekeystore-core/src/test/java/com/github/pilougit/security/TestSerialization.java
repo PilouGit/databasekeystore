@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
-import com.github.pilougit.security.databasekeystore.keystore.exceptions.DatabaseKeyStoreEntrySerialization;
-import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreCertificate;
-import com.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
-import com.github.pilougit.security.databasekeystore.keystore.service.DatabaseKeyStoreEntrySerializationService;
+import io.github.pilougit.security.databasekeystore.keystore.exceptions.DatabaseKeyStoreEntrySerialization;
+import io.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreCertificate;
+import io.github.pilougit.security.databasekeystore.keystore.model.DatabaseKeyStoreEntry;
+import io.github.pilougit.security.databasekeystore.keystore.service.DatabaseKeyStoreEntrySerializationService;
 import org.junit.Test;
 
 import java.security.InvalidKeyException;

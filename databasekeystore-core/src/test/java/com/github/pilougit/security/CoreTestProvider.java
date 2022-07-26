@@ -14,34 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
-import com.github.pilougit.security.databasekeystore.DatabaseKeyStoreProvider;
-import com.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
-import com.github.pilougit.security.databasekeystore.keystore.service.AESGcmCipheringKeyService;
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
-import com.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
+import io.github.pilougit.security.databasekeystore.DatabaseKeyStoreProvider;
+import io.github.pilougit.security.databasekeystore.keystore.DatabaseKeyStoreLoadStoreParameter;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
+import io.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
 import org.apache.commons.lang3.time.DateUtils;
-import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
-import org.bouncycastle.asn1.x509.KeyPurposeId;
-import org.bouncycastle.asn1.x509.X509Extensions;
-import org.bouncycastle.asn1.x509.X509Name;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Date;
 

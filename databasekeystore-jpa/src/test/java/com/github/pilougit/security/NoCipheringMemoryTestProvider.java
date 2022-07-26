@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.pilougit.security;
+package io.github.pilougit.security;
 
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreJpaRepository;
-import com.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
-import com.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
-import com.github.pilougit.security.databasekeystore.keystore.service.NoOpCipheringKeyService;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreJpaRepository;
+import io.github.pilougit.security.databasekeystore.keystore.repository.DatabaseKeyStoreRepository;
+import io.github.pilougit.security.databasekeystore.keystore.service.CipheringKeyService;
+import io.github.pilougit.security.databasekeystore.keystore.service.NoOpCipheringKeyService;
 import org.junit.Test;
 
 import java.io.IOException;
