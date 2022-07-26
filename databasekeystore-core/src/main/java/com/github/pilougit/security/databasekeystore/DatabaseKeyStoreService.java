@@ -38,9 +38,9 @@ public class DatabaseKeyStoreService extends Provider.Service {
     public Object newInstance(Object constructorParameter) throws NoSuchAlgorithmException {
         String type = this.getType();
         String algo = this.getAlgorithm();
-        if (type.equals("KeyStore") && algo.equals("DatabaseKeyStoreProvider")) {
+        if (type.equals(DatabaseKeyStoreProvider.KEYSTORE) ) {
             if (constructorParameter != null && !(constructorParameter instanceof CertStoreParameters)) {
-                throw new InvalidParameterException("constructorParameter must be instanceof CertStoreParameters");
+                throw new InvalidParameterException("constructorParameter must not be instanceof CertStoreParameters");
             } else {
                 try {
                     return new DatabaseKeyStoreSpi();

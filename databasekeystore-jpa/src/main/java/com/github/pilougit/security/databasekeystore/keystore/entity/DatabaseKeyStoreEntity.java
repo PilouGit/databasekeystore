@@ -28,7 +28,7 @@ import org.eclipse.persistence.annotations.Index;
 import javax.persistence.*;
 
 @Entity
-@Table(schema="databasekeystore",name="keyentry")
+@Table(name="keyentry")
 @Slf4j
 @Getter
 @Setter

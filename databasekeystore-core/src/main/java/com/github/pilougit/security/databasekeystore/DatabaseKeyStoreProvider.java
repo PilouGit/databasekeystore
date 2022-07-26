@@ -26,15 +26,16 @@ import java.security.Provider;
 @Slf4j
 public class DatabaseKeyStoreProvider extends Provider {
 
-    protected static final String PROVIDER_NAME = "DatabaseKeyStoreProvider";
+    public  static final String PROVIDER_NAME = "DatabaseKeyStoreProvider";
+    public static final String KEYSTORE="KeyStore";
     protected static final double version = 1.0d;
     protected static final String PROVIDER_INFO = "Information";
 
 
     public DatabaseKeyStoreProvider() {
         super(PROVIDER_NAME, version, PROVIDER_INFO);
-        DatabaseKeyStoreProvider.this.putService(new DatabaseKeyStoreService(this, "KeyStore",
-                "DatabaseKeyStoreProvider", "com.github.pilougit.security.DatabaseKeyStoreService", null, null));
+        DatabaseKeyStoreProvider.this.putService(new DatabaseKeyStoreService(this,   DatabaseKeyStoreProvider.KEYSTORE,DatabaseKeyStoreProvider.KEYSTORE
+              , "com.github.pilougit.security.DatabaseKeyStoreService", null, null));
 
     }
 

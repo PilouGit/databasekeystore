@@ -41,5 +41,32 @@
         </properties>
 
     </persistence-unit>
+    <persistence-unit name="MYSQL" >
 
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.github.pilougit.security.databasekeystore.keystore.entity.DatabaseKeyStoreEntity</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.testcontainers.jdbc.ContainerDatabaseDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:tc:mysql:8.0://doesntmatter/test?TC_INITSCRIPT=META-INF/MYSQL.sql"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+        </properties>
+
+    </persistence-unit>
+    <persistence-unit name="PG" >
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.github.pilougit.security.databasekeystore.keystore.entity.DatabaseKeyStoreEntity</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.testcontainers.jdbc.ContainerDatabaseDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:tc:postgresql:9.6.8://doesntmatter/test?TC_INITSCRIPT=META-INF/PG.sql"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+        </properties>
+
+    </persistence-unit>
 </persistence>

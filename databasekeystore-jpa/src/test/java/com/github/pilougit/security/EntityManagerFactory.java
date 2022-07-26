@@ -29,4 +29,9 @@ public class EntityManagerFactory
         javax.persistence.EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("HSQLDB");
         return emFactory.createEntityManager();
     }
+    public static EntityManager createEntityManagerMYSQLDB()
+    {
+        javax.persistence.EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("MYSQL");
+        return emFactory.createEntityManager();
+    }
 }

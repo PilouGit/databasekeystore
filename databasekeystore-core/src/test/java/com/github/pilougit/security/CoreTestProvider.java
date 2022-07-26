@@ -59,9 +59,13 @@ public abstract class CoreTestProvider extends TestUtils {
     protected abstract DatabaseKeyStoreRepository getDatabaseKeyStore();
     protected abstract CipheringKeyService getCipheringKeyService();
 
+    public KeyStore getKeyStore() throws KeyStoreException, NoSuchProviderException {
+        return KeyStore.getInstance(DatabaseKeyStoreProvider.KEYSTORE, DatabaseKeyStoreProvider.PROVIDER_NAME);
+
+    }
     protected void testSecretKey() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, UnrecoverableKeyException {
 
-        KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
+        KeyStore keystore = getKeyStore();
         keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(),  getCipheringKeyService()));
         SecretKey key=this.generateSecretKey();
         keystore.setKeyEntry("pilou", key,"pilou".toCharArray(),null);
@@ -73,7 +77,7 @@ public abstract class CoreTestProvider extends TestUtils {
     }
     protected void testRSAKey() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, UnrecoverableKeyException {
 
-        KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
+        KeyStore keystore = getKeyStore();
         keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(),  getCipheringKeyService()));
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);
@@ -96,7 +100,7 @@ public abstract class CoreTestProvider extends TestUtils {
     }
     protected void testECCKey() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, UnrecoverableKeyException, InvalidAlgorithmParameterException {
 
-        KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
+        KeyStore keystore = getKeyStore();
         keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(),  getCipheringKeyService()));
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
         ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec("secp256r1");
@@ -120,7 +124,7 @@ public abstract class CoreTestProvider extends TestUtils {
     }
         protected void testCertificate() throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
         Certificate certificate=generateSelfSignedX509Certificate();
-        KeyStore keystore = KeyStore.getInstance("DatabaseKeyStoreProvider", "DatabaseKeyStoreProvider");
+        KeyStore keystore = getKeyStore();
         keystore.load(new DatabaseKeyStoreLoadStoreParameter(this.getDatabaseKeyStore(), getCipheringKeyService()));
         keystore.setCertificateEntry("pilou", certificate);
 
