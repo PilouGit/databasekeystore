@@ -13,5 +13,8 @@
         <module name="databasekeystore-jpa" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="distribution" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

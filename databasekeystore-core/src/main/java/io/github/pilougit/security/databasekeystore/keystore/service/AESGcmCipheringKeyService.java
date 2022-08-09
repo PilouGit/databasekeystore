@@ -38,7 +38,7 @@ import java.security.spec.KeySpec;
 public class AESGcmCipheringKeyService implements CipheringKeyService {
 
     private final static int GCM_IV_LENGTH = 12;
-    private final SecureRandom secureRandom = new SecureRandom();
+     private final SecureRandom secureRandom = new SecureRandom();
 
     @Override
     public SecretKey generateSecretKey(char[] password, byte[] salt) throws CipheringKeyServiceException {

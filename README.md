@@ -8,7 +8,7 @@ The core package could be installed through maven with
 <dependency>
   <groupId>io.github.pilougit.security</groupId>
   <artifactId>databasekeystore-core</artifactId>
-  <version>1.0-alpha</version>
+  <version>${lastestversion}</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ Could be installed through
 <dependency>
   <groupId>io.github.pilougit.security</groupId>
   <artifactId>databasekeystore-jpa</artifactId>
-  <version>1.0-alpha</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -100,7 +100,7 @@ Could be installed through
 <dependency>
   <groupId>io.github.pilougit.security</groupId>
   <artifactId>databasekeystore-simple</artifactId>
-  <version>1.0-alpha</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -112,7 +112,7 @@ Could be installed through
 <dependency>
   <groupId>io.github.pilougit.security</groupId>
   <artifactId>databasekeystore-caffeine</artifactId>
-  <version>1.0-alpha</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 

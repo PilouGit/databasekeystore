@@ -22,11 +22,12 @@
     <parent>
         <groupId>io.github.pilougit.security</groupId>
         <artifactId>databasekeystore-parent</artifactId>
-        <version>1.0-alpha</version>
+        <version>1.0.0</version>
     </parent>
 
     <packaging>pom</packaging>
-    <artifactId>packaging</artifactId>
+    <artifactId>distribution</artifactId>
+    <name>Distribution</name>
     <dependencies>
         <dependency>
             <groupId>io.github.pilougit.security</groupId>
@@ -46,25 +47,27 @@
         </dependency>
     </dependencies>
     <build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.3.0</version>
-            <executions>
-                <execution>
-                    <id>build-package</id>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                    <phase>package</phase>
-                    <configuration>
-                        <descriptors>
-                            <descriptor>assembly.xml</descriptor>
-                        </descriptors>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins></build>
+         <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+
+                        <configuration>
+                            <finalName>databasekeystore_${project.version}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/main/resources/bin.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
