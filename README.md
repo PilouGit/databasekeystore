@@ -1,6 +1,9 @@
 # databasekeystore
 This package provides functionality to use [KeyStore](https://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.html)  with support of multiple storage engine by implementing DatabaseKeyStoreRepository.
 
+A DB backed Keystore is very useful in a clustered environment which rely on a keystore. Instead of relying on a file based keystore at each node in the cluster that needs to be kept in sync, a central DB based Keystore is useful.
+
+
 # Installation
 The core package could be installed through maven with 
 
